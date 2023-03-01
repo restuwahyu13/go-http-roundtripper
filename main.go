@@ -58,18 +58,18 @@ func main() {
 		log.Fatalf("NEW REQUEST %s", err.Error())
 	}
 
+	res, err := authTripper.RoundTrip(req)
+	if err != nil {
+		log.Fatalf("CLIENT DO %s", err.Error())
+	}
+	defer res.Body.Close()
+
 	dumpReq, err := httputil.DumpRequestOut(req, true)
 	defer log.Printf("METHOD: %s - URL: %s - REQUEST: %s", req.Method, req.URL, string(dumpReq))
 
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-
-	res, err := authTripper.RoundTrip(req)
-	if err != nil {
-		log.Fatalf("CLIENT DO %s", err.Error())
-	}
-	defer res.Body.Close()
 
 	dumpRes, err := httputil.DumpResponse(res, true)
 	defer log.Printf("METHOD: %s - URL: %s - RESPONSE: %s", req.Method, req.URL, string(dumpRes))
