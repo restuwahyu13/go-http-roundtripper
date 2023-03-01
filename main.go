@@ -138,15 +138,15 @@ func (h *ArticleRoundTripper) RoundTrip(req *http.Request) (*http.Response, erro
 */
 
 func HttpDump(res *http.Response, req *http.Request) {
-	dumpReq, err := httputil.DumpRequestOut(req, true)
-	defer log.Printf("METHOD: %s - URL: %s - REQUEST: %s", req.Method, req.URL, string(dumpReq))
+	dumpRes, err := httputil.DumpResponse(res, true)
+	defer log.Printf("METHOD: %s - URL: %s - RESPONSE: %s", req.Method, req.URL, string(dumpRes))
 
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	dumpRes, err := httputil.DumpResponse(res, true)
-	defer log.Printf("METHOD: %s - URL: %s - RESPONSE: %s", req.Method, req.URL, string(dumpRes))
+	dumpReq, err := httputil.DumpRequestOut(req, false)
+	defer log.Printf("METHOD: %s - URL: %s - REQUEST: %s", req.Method, req.URL, string(dumpReq))
 
 	if err != nil {
 		log.Fatal(err.Error())
