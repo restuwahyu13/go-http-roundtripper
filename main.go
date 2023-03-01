@@ -94,7 +94,7 @@ func (h *LoginRoundTripper) RoundTrip(req *http.Request) (*http.Response, error)
 		log.Fatal(err.Error())
 	}
 
-	loginReq, err := http.NewRequest(http.MethodPost, endpoint+"/login", bytes.NewReader(bodyBytes))
+	loginReq, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint+"/login", bytes.NewReader(bodyBytes))
 	loginReq.Header.Set("Content-Type", "application/json")
 
 	if err != nil {
