@@ -64,19 +64,7 @@ func main() {
 	}
 	defer res.Body.Close()
 
-	dumpReq, err := httputil.DumpRequestOut(req, true)
-	defer log.Printf("METHOD: %s - URL: %s - REQUEST: %s", req.Method, req.URL, string(dumpReq))
-
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-
-	dumpRes, err := httputil.DumpResponse(res, true)
-	defer log.Printf("METHOD: %s - URL: %s - RESPONSE: %s", req.Method, req.URL, string(dumpRes))
-
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	HttpDump(res, req)
 
 	resByte, err := ioutil.ReadAll(res.Body)
 	if err != nil {
@@ -141,4 +129,26 @@ func NewArticleRoundTripper() *ArticleRoundTripper {
 func (h *ArticleRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 	req.URL, _ = url.Parse(endpoint + "/articles")
 	return h.Tripper.RoundTrip(req)
+}
+
+/**
+############################
+# DUMP REQUEST & RESPONSE
+############################
+*/
+
+func HttpDump(res *http.Response, req *http.Request) {
+	dumpReq, err := httputil.DumpRequestOut(req, true)
+	defer log.Printf("METHOD: %s - URL: %s - REQUEST: %s", req.Method, req.URL, string(dumpReq))
+
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	dumpRes, err := httputil.DumpResponse(res, true)
+	defer log.Printf("METHOD: %s - URL: %s - RESPONSE: %s", req.Method, req.URL, string(dumpRes))
+
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 }
